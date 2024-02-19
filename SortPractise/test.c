@@ -16,14 +16,18 @@ void TestShellSort()
 int main()
 {
 	//TestShellSort();
-	int a[] = { 1,9,5,2,7,5,3,4,0,1 };
+	int a[] = { 101,99,105,102,97,105,103,104,110,100 };
 	int n = sizeof(a) / sizeof(int);
 	PrintArray(a, n);
 	//BubbleSort(a, n);
 	//PrintArray(a, n);
 	//SelectSort(a, 0,n-1);
 	//HeapSort(a, n);
-	QuickSort(a, 0, n - 1);
+	//QuickSort(a, 0, n - 1);
+	//QuickSortNonR(a, 0, n - 1);
+	//MergeSort(a, n);
+	//MergeSortNonR(a, n);
+	CountSort(a, n);
 	PrintArray(a, n);
 	return 0;
 }

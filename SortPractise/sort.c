@@ -1,4 +1,5 @@
 #include "sort.h"
+#include"stack.h"
 void Swap(int* a, int* b)
 {
 	int tmp = *a;
@@ -182,4 +183,133 @@ void QuickSort(int* a, int begin, int end)
 	QuickSort(a, begin, keyi - 1);
 	QuickSort(a, keyi + 1, end);
 }
+void QuickSortNonR(int* a, int begin, int end)
+{
+	ST st;
+	InitStack(&st);
+	PushStack(&st, end);
+	PushStack(&st, begin);
+	while (!StackEmpty(&st))
+	{
+		int left = StackTop(&st);
+		PopStack(&st);
+		int right = StackTop(&st);
+		PopStack(&st);
+		int keyi = PartSort1(a, left, right);
+		if (right > keyi + 1)
+		{
+			PushStack(&st, right);
+			PushStack(&st, keyi + 1);
+		}
+		if (left < keyi - 1)
+		{
+			PushStack(&st, keyi - 1);
+			PushStack(&st, left);
+		}
+
+	}
+	DestroyStack(&st);
+}
+void _MergeSort(int* a, int left, int right, int* tmp)
+{
+	/*if (left == right)
+		return;*/
+	if (right - left + 1 <= 10)//最小区间优化
+	{
+		QuickSort(a, left, right);
+		return;
+	}
+	int mid = (left + right) / 2;
+	_MergeSort(a, left, mid, tmp);
+	_MergeSort(a, mid + 1, right, tmp);
+	int start1 = left, end1 = mid;
+	int start2 = mid + 1, end2 = right;
+	int i = left;
+	while (start1 <= end1 && start2 <= end2)
+	{
+		if (a[start1] <=a[start2])
+			tmp[i++] = a[start1++];
+		else
+			tmp[i++] = a[start2++];
+	}
+	while (start1 <= end1)
+	{
+		tmp[i++] = a[start1++];
+	}
+	while (start2 <= end2)
+	{
+		tmp[i++] = a[start2++];
+	}
+	memcpy(a + left, tmp + left, sizeof(int) * (right - left + 1));
+}
+
+void MergeSort(int* a, int n)
+{
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	_MergeSort(a, 0, n - 1, tmp);
+	free(tmp);
+}
+void MergeSortNonR(int* a, int n)
+{
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	int gap = 1;
+	while (gap < n)
+	{
+		int j = 0;
+		for (int i = 0; i < n; i = i + 2 * gap)
+		{
+			int start1 = i, end1 = i + gap - 1;
+			int start2 = i + gap, end2 = i + 2 * gap - 1;
+			if (end1 >= n ||start2 >= n)
+				break;
+			if (end2 >= n)
+				end2 = n - 1;
+			while (start1 <= end1 && start2 <= end2)
+			{
+				if (a[start1] <= a[start2])
+					tmp[j++] = a[start1++];
+				else
+					tmp[j++] = a[start2++];
+			}
+			while (start1 <= end1)
+			{
+				tmp[j++] = a[start1++];
+			}
+			while (start2 <= end2)
+			{
+				tmp[j++] = a[start2++];
+			}
+			memcpy(a + i, tmp + i, sizeof(int) * (end2-i+1));
+		}
+		gap *= 2;
+	}
+	free(tmp);
+}
+void CountSort(int* a, int n)
+{
+	int min = a[0], max = a[0];
+	for (int i = 0; i < n; i++)
+	{
+		if (a[i] < min)
+			min = a[i];
+		if (a[i] > max)
+			max = a[i];
+	}
+	int gap = max - min + 1;
+	int* tmp = (int*)malloc(sizeof(int) * gap);
+	memset(tmp, 0, sizeof(int) * gap);
+	for (int i = 0; i < n; i++)
+	{
+		tmp[a[i] - min]++;
+	}
+	int j = 0;
+	for (int i = 0; i < gap; i++)
+	{
+		while (tmp[i]--)
+		{
+			a[j++] = i + min;
+		}
+	}
+}
+
 

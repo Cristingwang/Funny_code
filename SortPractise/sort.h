@@ -15,6 +15,7 @@ void HeapSort(int* a, int n);
 void QuickSort(int* a, int begin, int end);
 void QuickSortNonR(int* a, int begin, int end);
 void MergeSort(int* a, int n);
+void _MergeSort(int* a, int left, int right, int* tmp);
 void MergeSortNonR(int* a, int n);
 void CountSort(int* a, int n);
 
