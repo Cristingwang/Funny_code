@@ -26,8 +26,8 @@ int main()
 	//QuickSort(a, 0, n - 1);
 	//QuickSortNonR(a, 0, n - 1);
 	//MergeSort(a, n);
-	//MergeSortNonR(a, n);
-	CountSort(a, n);
+	MergeSortNonR1(a, n);
+	//CountSort(a, n);
 	PrintArray(a, n);
 	return 0;
 }

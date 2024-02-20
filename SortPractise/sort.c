@@ -285,6 +285,54 @@ void MergeSortNonR(int* a, int n)
 	}
 	free(tmp);
 }
+void MergeSortNonR1(int* a, int n)
+{
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	int gap = 1;
+	while (gap < n)
+	{
+		int j = 0;
+		for (int i = 0; i < n; i += 2 * gap)
+		{
+			int start1 = i, end1 = i + gap - 1;
+			int start2 = i + gap, end2 = i + 2 * gap - 1;
+			if (end1 >= n)
+			{
+				end1 = n - 1;
+				start2 = n;
+				end2 = n - 1;
+			}
+			else if(start2>=n)
+			{
+				start2 = n;
+				end2 = n - 1;
+			}
+			else if (end2 >= n)
+			{
+				end2 = n - 1;
+			}
+			while (start1 <= end1 && start2 <= end2)
+			{
+				if (a[start1] <= a[start2])
+					tmp[j++] = a[start1++];
+				else
+					tmp[j++] = a[start2++];
+			}
+			while (start1 <= end1)
+			{
+				tmp[j++] = a[start1++];
+			}
+			while (start2 <= end2)
+			{
+				tmp[j++] = a[start2++];
+			}
+		}
+		memcpy(a, tmp, sizeof(int) * n);
+		gap *= 2;
+	}
+	free(tmp);
+}
+
 void CountSort(int* a, int n)
 {
 	int min = a[0], max = a[0];
@@ -311,5 +359,6 @@ void CountSort(int* a, int n)
 		}
 	}
 }
+
 
 
